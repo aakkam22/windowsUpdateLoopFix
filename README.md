@@ -1,42 +1,64 @@
 # Windows Update Loop Fix
 
-> An automated wizard to fix the "Checking for Updates" loop on Windows 7 SP1
+> An automated script to fix the "Checking for Updates" loop on Windows 7 SP1
 
 ## Overview
 
-When a fresh copy of Windows 7 is installed, the update mechanism originally included with the operating system can't interact with the new Microsoft servers, causing the update check to hang. This wizard was written specifically to fix the "Checking for Updates" loop that occurs on Windows 7 systems.
+After installing a fresh copy of Windows 7, Windows Update will hang when trying to check for updates. This problem occurs because a fresh copy of Windows 7 doesn't have the required updates to interface with Microsoft's servers. The fix is to download and install the following updates:
 
-The wizard also installs KB3102810. This update addresses high CPU usage by the svchost.exe proces during updating operations.
+- April 2015 servicing stack update for Windows 7 and Windows Server 2008 R2 (KB3020369)
+- July 2016 update rollup for Windows 7 SP1 and Windows Server 2008 R2 SP1 (KB3172605)
+- The latest Windows Update Agent for Windows 7 (v7.6.7600.256)
 
-The fix is divided into three stages:
+This script was written to automate the process. It is divided into three stages:
 
-1. Resets all Windows Update components
+1. Downloads the updates and resets all Windows Update components
 2. Installs the latest Windows Update Agent
-3. Installs KB3020369, KB3172605 and KB3102810
+3. Installs KB3020369 and KB3172605
+
+You can download and install the updates yourself, but running the script ensures that any previous Windows Update issues are cleared out before the updates are applied, and that the packages are installed in the correct order.
 
 ## Compatibility
 
-Compatible with **Windows 7 SP1 only**. No support will be provided for a different version.
-
-If you are running Windows 7, make sure Service Pack 1 is installed.
+To install these updates, you should have Windows 7 with Service Pack 1 installed.
 
 ## Instructions
 
 1. Download the latest release from [here](https://github.com/aakkam22/windowsUpdateLoopFix/releases)
 2. Exit any running applications
-3. Double-click the wizard.exe file inside the .zip folder
+3. Double-click the UpdateFix.exe file and follow the instructions
 
 ###
 
-* The **"Custom (advanced users only)"** option allows you to skip to a specific stage of the fix 
+* The **"Custom (Advanced Users Only)"** option allows you to skip to a specific stage of the fix 
 
-* For the best results, choose the **"Express (recommended)"** option to run through all the stages in order
+* For the best results, choose **"Express Fix (Recommended)"** to run through all the stages in order
 
-The wizard will connect to the Internet to download the updates for installation. Please disconnect from the Internet when the required files have downloaded to ensure a smooth installation.
+An Internet Connection is required to download the updates, however, it is recommended to disconnect from the Internet once the updates have been downloaded. Doing so prevents Windows Update from attempting to connect while it is being serviced.
 
 ## Package Safety
 
-Files downloaded from the Internet can sometimes trigger false anti-virus alarms. This program has been scanned with the latest anti-virus definitions and does not contain malware. 
+This script is comprised of three (3) individual batch files. The batch files were archived into .7z format and then the archive was used to create a 7-Zip Self-Extracting Archive using the official modules provided by Igor Pavlov. The .exe file was scanned with Windows Defender using the latest definitions available at the time of upload to GitHub.
+
+## How The Script Works
+
+When it is double-clicked, the self-extracting .exe file extracts three batch files to the Windows TEMP directory:
+
+master.cmd
+updates.cmd
+cleanup.cmd
+
+As its name suggests, "master.cmd" is the main batch file. It:
+
+1. Downloads the updates from Microsoft
+2. Copies "updates.cmd" and "cleanup.cmd" to C:\packages
+3. Resets Windows Update Components
+4. Installs the Windows Update Agent
+5. Sets the RunOnce registry key to run the next file, "updates.cmd" after the restart
+
+After the restart, updates.cmd unpacks the .msu files for KB3020369 and KB3172605 and installs them using DISM. A log file is created at C:\install.log. It also sets the RunOnce registry key to run the final file, "cleanup.cmd".
+
+After the final restart, "cleanup.cmd" deletes the files in the packages folder, provides the user a summary of the operations, and then deletes itself.
 
 ## Help
 
