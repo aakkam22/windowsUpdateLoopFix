@@ -22,7 +22,7 @@ After your computer reboots, it is busy loading all of the services and startup 
 
 You can read a detailed description of how this script works and how the .exe file was created in [README.MD.](README.MD)
 
-This package is an unsigned file downloaded from the Internet. Please be assured that it contains no malware. However, because it is an unsigned file, some anti-virus programs may err on the side of caution and flag it as malware. 
+This package was created with official 7-Zip modules and scanned with the latest anti-virus definitions before being uploaded to GitHub. However, some anti-virus programs' heuristics may err on the side of caution and flag it as malware. Please be assured it is not malware.
 
 ## I get "Unsupported Operating System" but I am running Windows 7. 
 
