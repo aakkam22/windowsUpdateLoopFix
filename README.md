@@ -44,9 +44,9 @@ This script is comprised of three (3) individual batch files. The batch files we
 
 When it is double-clicked, the self-extracting .exe file extracts three batch files to the Windows TEMP directory:
 
-master.cmd
-updates.cmd
-cleanup.cmd
+- master.cmd
+- updates.cmd
+- cleanup.cmd
 
 As its name suggests, "master.cmd" is the main batch file. It:
 
