@@ -50,7 +50,7 @@ When it is double-clicked, the self-extracting .exe file extracts three batch fi
 
 As its name suggests, "master.cmd" is the main batch file. It:
 
-1. Downloads the updates from Microsoft
+1. Downloads the updates from Microsoft and stores them in C:\packages
 2. Copies "updates.cmd" and "cleanup.cmd" to C:\packages
 3. Resets Windows Update Components
 4. Installs the Windows Update Agent
@@ -58,7 +58,7 @@ As its name suggests, "master.cmd" is the main batch file. It:
 
 After the restart, updates.cmd unpacks the .msu files for KB3020369 and KB3172605 and installs them using DISM. A log file is created at C:\install.log. It also sets the RunOnce registry key to run the final file, "cleanup.cmd".
 
-After the final restart, "cleanup.cmd" deletes the files in the packages folder, provides the user a summary of the operations, and then deletes itself.
+After the final restart, "cleanup.cmd" deletes the files in the C:\packages folder, provides the user a summary of the operations, and then deletes itself.
 
 ## Help
 
