@@ -1,6 +1,6 @@
 # Windows Update Loop Fix
 
-> An automated script to fix the "Checking for Updates" loop on Windows 7 SP1
+> An automated script to fix the "Checking for Updates" loop on Windows 7 SP1  
 
 ## Overview
 
@@ -62,6 +62,8 @@ After the final restart, "cleanup.cmd" deletes the files in the C:\packages fold
 
 ## Help
 
+* With the sunset of Windows 7, version 5.0 is likely the last version, unless a bug needs to be fixed.
+
 * See [FAQ.md](https://github.com/aakkam22/windowsUpdateLoopFix/blob/master/FAQ.md) for a list of frequently encountered problems and solutions.
 
 * See [CHANGELOG.md](https://github.com/aakkam22/windowsUpdateLoopFix/blob/master/CHANGELOG.md) for development history.
@@ -70,4 +72,4 @@ After the final restart, "cleanup.cmd" deletes the files in the C:\packages fold
 
 ## Terms of Use
 
-You use this script at your own risk. While this wizard has been tested extensively, the developer assumes no responsibility for any damage.
+This script will modify sensitive system files. Please ensure that your files are backed up before running this script. This script has been tested extensively. The author is not responsible for any data loss. 
