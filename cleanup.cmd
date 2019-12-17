@@ -78,17 +78,9 @@ echo.	^|  [3] Exit		   	^|
 echo.	^|			      	^|
 echo.	+-------------------------------+
 choice /c 123 /n
-	if %errorlevel% EQU 1 goto openWU
-	if %errorlevel% EQU 2 goto githubRepo
+	if %errorlevel% EQU 1 start wuapp.exe && goto :sumarry
+	if %errorlevel% EQU 2 start https://github.com/aakkam22/windowsUpdateLoopFix && goto :summary
 	if %errorlevel% EQU 3 goto quit
-
-:githubRepo
-start https://github.com/aakkam22/windowsUpdateLoopFix
-goto :summary
-
-:openWU
-start wuapp.exe
-goto :summary
 
 :quit
 SETLOCAL >nul 2>&1
