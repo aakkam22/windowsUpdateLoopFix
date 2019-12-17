@@ -20,7 +20,7 @@ You can download and install the updates yourself, but running the script ensure
 
 ## Compatibility
 
-To install these updates, you should have Windows 7 with Service Pack 1 installed.
+To install these updates or run this script, you should have Windows 7 with Service Pack 1 installed.
 
 ## Instructions
 
