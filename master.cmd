@@ -79,14 +79,10 @@ echo.	+------------------------------------------------+
 choice /c 1234 /n
 	if %errorlevel% EQU 1 set custom=false && goto termsOfUse
 	if %errorlevel% EQU 2 goto chooseCustom
-	if %errorlevel% EQU 3 goto aboutThisScript
-	if %errorlevel% EQU 4 goto githubRepo
+	if %errorlevel% EQU 3 start https://github.com/aakkam22/windowsUpdateLoopFix/blob/master/README.md && goto :mainMenu
+	if %errorlevel% EQU 4 start https://github.com/aakkam22/windowsUpdateLoopFix && goto :mainMenu
 	if %errorlevel% EQU 5 exit
 	
-:githubRepo
-start https://github.com/aakkam22/windowsUpdateLoopFix
-goto :mainMenu
-
 :chooseCustom
 set screen=Advanced Options (Advanced Users Only)
 call :printHeader
@@ -110,44 +106,6 @@ choice /c 1234 /n
 	if %errorlevel% EQU 2 set custom=2 && goto termsOfUse
 	if %errorlevel% EQU 3 set custom=3 && goto termsOfUse
 	if %errorlevel% EQU 4 goto mainMenu
-
-:aboutThisScript
-cls
-mode con cols=102 lines=42
-echo.
-echo Windows Update Loop Fix
-echo Version 5.0
-echo.
-echo About This Script
-echo.
-echo This script was written to fix the "Checking for Updates" loop that occurs on Windows 7 systems. 
-echo.
-echo The systems that encounter this problem don't have the latest updates for Windows Update installed. 
-echo These updates include:
-echo.
-echo "April 2015 servicing stack update for Windows 7 and Windows Server 2008 R2 (KB3020369)"
-echo "July 2016 update rollup for Windows 7 SP1 and Windows Server 2008 R2 SP1 (KB3172605)"
-echo The latest Windows Update Agent for Windows 7 (v7.6.7600.256)
-echo.
-echo This script automates the installation of these updates. The script is divided into three stages:
-echo.
-echo Stage 1 downloads the updates to your hard drive and then resets Windows Update Components using the
-echo aggresive options detailed in Microsoft's support Article "How do I reset Windows Update Components?"
-echo.
-echo Stage 2 installs the Windows Update Agent
-echo.
-echo Stage 3 unpacks the .msu update files into .cab files which are then installed using DISM.EXE.
-echo.
-echo After Stage 3, the script deletes the files that were downloaded to your system.
-echo.
-echo For help, please open an issue on GitHub or email aakkam22@gmail.com. 
-echo With the sunset of Windows 7, support for that OS will be limited.
-echo.
-echo.
-echo.
-echo Press any key to go back.
-pause>nul
-goto :mainMenu
 
 :termsOfUse
 set screen=Important Information
