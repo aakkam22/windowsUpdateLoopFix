@@ -2,6 +2,12 @@
 
 > Author : @aakkam22  
 > Last Updated : 12 February 2018
+## 5.X
+
+### 5.0
+
+* Rewrote the whole script
+* Updated documentation on GitHub
 
 ## 4.X
 
