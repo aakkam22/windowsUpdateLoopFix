@@ -1,16 +1,11 @@
-::=============================
-::NAME: Windows Update Loop Fix
-::VERSION: 4.1.1
-::AUTHOR: aakkam22
-::=============================
-
-
-::===========
-::CHECK ADMIN
-::===========
-
 @echo off
 
+REM NAME: Windows Update Loop Fix
+REM VERSION: 5.0
+REM BUILD DATE: 17 December 2019
+REM AUTHOR: aakkam22
+
+REM Function to elevate privileges
 :checkAdmin
 fsutil dirty query %systemdrive% >nul
 	if '%errorlevel%' NEQ '0' (
@@ -31,133 +26,73 @@ exit /B
 pushd "%CD%"
 CD /D "%~dp0"
 
-call :mode
+call :setWindow
 goto cleanup
 
-
-::=====================
-::SET WINDOW PROPERTIES
-::=====================
-
-:mode
-echo off
+REM Function to set the window properties
+:setWindow
 title Windows Update Loop Fix
-mode con cols=82 lines=43
+mode con cols=80 lines=40
 goto :eof
 
-
-::=============
-::PRINT HEADING
-::=============
-
-:print
+REM Function to print header
+:printHeader
 cls
 echo.
-echo.Windows Update Loop Fix v4.1.2
-echo ------------------------------
+echo %screen%
 echo.
 goto :eof
 
-
-::=======	
-::CLEANUP
-::=======
-
 :cleanup
-call :print
-echo Cleanup
-echo.
-echo.	The wizard is cleaning up...
-timeout /t 4 /nobreak>nul
+set screen=Cleanup
+call :printHeader
+echo The script is deleting leftover files...
+rmdir %systemdrive%\packages\3020369 /s /q >nul 2>&1
+rmdir %systemdrive%\packages\3172605 /s /q >nul 2>&1
 del /q %systemdrive%\packages\3020369.msu >nul 2>&1
 del /q %systemdrive%\packages\3172605.msu >nul 2>&1
-del /q %systemdrive%\packages\3102810.msu >nul 2>&1
-del /q %systemdrive%\packages\updates.bat >nul 2>&1
 del /q %systemdrive%\packages\wua.exe >nul 2>&1
+del /q %systemdrive%\packages\updates.cmd >nul 2>&1
+del /q %systemdrive%\packages\master.cmd >nul 2>&1
 goto summary
-
-
-::=======	
-::SUMMARY
-::=======
 
 :summary
-call :print
-echo Summary
+set screen=Summary
+call :printHeader
+echo The script has finished running. You can now check for Windows Updates. 
 echo.
-echo.	The fix has finished processing. You can now check for new updates.
+echo Please be patient when checking for updates for the first time. 
+echo Windows Update might still be registering brand new components.
 echo.
-echo.	Please be patient when checking for updates for the first time
-echo.	because Windows Update might still be registering brand new components.
+echo NOTE: A DISM.EXE log for the update installations was created at:
 echo.
+echo.	"%systemdrive%\install.log"
 echo.
-echo.	What would you like to do?
+echo Please choose an option:
 echo.
-echo.
-echo.	+---------------------------------------------------+
-echo.	^|						    ^|
-echo.	^|  1 -^> Open Windows Update			    ^|
-echo.	^|						    ^|
-echo.	^|  2 -^> Go online to get Windows 7 Service Pack 2   ^|
-echo.	^|						    ^|
-echo.	^|  3 -^> View README				    ^|
-echo.	^|						    ^|
-echo.	^|  4 -^> View FAQ				    ^|
-echo.	^|						    ^|
-echo.	^|  5 -^> View CHANGELOG				    ^|
-echo.	^|						    ^|
-echo.	^|						    ^|
-echo.	^|  6 -^> Exit					    ^|
-echo.	^|						    ^|
-echo.	+---------------------------------------------------+
-	choice /c 123456 /n
-	if %errorlevel% EQU 1 goto wuApp
-	if %errorlevel% EQU 2 goto SP2
-	if %errorlevel% EQU 3 goto openReadme
-	if %errorlevel% EQU 4 goto openFAQ
-	if %errorlevel% EQU 5 goto openChangelog
-	if %errorlevel% EQU 6 exit
+echo.	+-------------------------------+
+echo.	^|			    	^|
+echo.	^|  [1] Open Windows Update	^|
+echo.	^|  [2] Go to GitHub Repository	^|
+echo.	^|  [3] Exit		   	^|
+echo.	^|			      	^|
+echo.	+-------------------------------+
+choice /c 123 /n
+	if %errorlevel% EQU 1 goto openWU
+	if %errorlevel% EQU 2 goto githubRepo
+	if %errorlevel% EQU 3 goto quit
 
-:wuApp
+:githubRepo
+start https://github.com/aakkam22/windowsUpdateLoopFix
+goto :summary
+
+:openWU
 start wuapp.exe
-goto summary
-
-:SP2
-start https://answers.microsoft.com/en-us/windows/forum/windows_7-update/how-to-update-windows-7-using-the-convenience/c2c7009f-3a10-4199-9c89-48e1e883051e
-goto summary
-
-:openReadme
-IF EXIST "%systemdrive%\packages\README.html" (
-start %systemdrive%\packages\README.html
-) ELSE (
-start https://github.com/aakkam22/windowsUpdateLoopFix/blob/master/README.md
-)
-goto summary
-
-:openFAQ
-IF EXIST "%systemdrive%\packages\FAQ.html" (
-start %systemdrive%\packages\FAQ.html
-) ELSE (
-start https://github.com/aakkam22/windowsUpdateLoopFix/blob/master/FAQ.md
-)
-goto summary
-
-:openChangelog
-IF EXIST "%systemdrive%\packages\CHANGELOG.html" (
-start %systemdrive%\packages\CHANGELOG.html
-) ELSE (
-start https://github.com/aakkam22/windowsUpdateLoopFix/blob/master/CHANGELOG.md
-)
-goto summary
-
+goto :summary
 
 :quit
-del /q %systemdrive%\packages\README.html >nul 2>&1
-del /q %systemdrive%\packages\FAQ.html >nul 2>&1
-del /q %systemdrive%\packages\CHANGELOG.html.html >nul 2>&1
 SETLOCAL >nul 2>&1
 SET someOtherProgram=SomeOtherProgram.exe >nul 2>&1
 TASKKILL /IM "%someOtherProgram%" >nul 2>&1
 DEL "%~f0" >nul 2>&1
 exit 
-
