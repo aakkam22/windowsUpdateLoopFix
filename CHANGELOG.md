@@ -1,7 +1,9 @@
 # CHANGELOG
 
-> Author : @aakkam22  
-> Last Updated : 12 February 2018
+> Name: Windows Update Loop Fix  
+> Author: aakkam22  
+> Last Updated : 17 December 2019
+
 ## 5.X
 
 ### 5.0
